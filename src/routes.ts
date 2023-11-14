@@ -8,12 +8,17 @@ import {
 import requireUser from "./middlewares/requireUser";
 import parseSchema from "./middlewares/parseSchema";
 import { createUserSchema } from "./schemas/user.schema";
+import createSessionSchema from "./schemas/session.schema";
 function routes(app: Express) {
   app.get("/healthcheck", (req: Request, res: Response) => {
     res.sendStatus(200);
   });
   app.post("/api/users", parseSchema(createUserSchema), createUserHandler);
-  app.post("/api/sessions", createSessionHandler);
+  app.post(
+    "/api/sessions",
+    parseSchema(createSessionSchema),
+    createSessionHandler
+  );
   app.get("/api/sessions", requireUser, getUserSessionsHandler);
   app.delete("/api/sessions", requireUser, deleteUserSessionHanler);
 }
