@@ -29,7 +29,7 @@ export async function createSessionHandler(req: Request, res: Response) {
   );
   res.send({ accessToken, refreshToken });
 }
-export async function getUserSessions(req: Request, res: Response) {
+export async function getUserSessionsHandler(req: Request, res: Response) {
   const userId = res.locals.user._id;
   const sessions = await getSessions({ user: userId, valid: true });
   return res.send(sessions);
