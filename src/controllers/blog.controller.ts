@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 import { createBlog } from "../services/blog.service";
+import { CreatBlogInput } from "../schemas/blog.schema";
 
-export async function createBlogHandler(req: Request, res: Response) {
+export async function createBlogHandler(
+  req: Request<{}, {}, CreatBlogInput["body"]>,
+  res: Response
+) {
   try {
     const userId = res.locals.user._id;
     const body = req.body;

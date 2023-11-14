@@ -10,6 +10,7 @@ import parseSchema from "./middlewares/parseSchema";
 import { createUserSchema } from "./schemas/user.schema";
 import createSessionSchema from "./schemas/session.schema";
 import { createBlogHandler } from "./controllers/blog.controller";
+import { createBlogSchema } from "./schemas/blog.schema";
 function routes(app: Express) {
   app.get("/healthcheck", (req: Request, res: Response) => {
     res.sendStatus(200);
@@ -22,6 +23,10 @@ function routes(app: Express) {
   );
   app.get("/api/sessions", requireUser, getUserSessionsHandler);
   app.delete("/api/sessions", requireUser, deleteUserSessionHanler);
-  app.post("/api/blogs", requireUser, createBlogHandler);
+  app.post(
+    "/api/blogs",
+    [requireUser, parseSchema(createBlogSchema)],
+    createBlogHandler
+  );
 }
 export default routes;
