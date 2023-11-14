@@ -6,6 +6,7 @@ import updateSession, {
 } from "../services/session.service";
 import { jwtSign } from "../utils/jwt";
 import config from "config";
+import { get } from "lodash";
 
 export async function createSessionHandler(req: Request, res: Response) {
   //validate user password
@@ -14,7 +15,8 @@ export async function createSessionHandler(req: Request, res: Response) {
     return res.status(401).send("Invalid email or password");
   }
   //create session
-  const session = await createSession(user._id, res.get("user-agent") || "");
+  const userAgent = get(req, "headers.user-agent", "")?.toString();
+  const session = await createSession(user._id, userAgent);
   //create acces and refresh tokens and send send them back
   const accessToken = jwtSign(
     {
