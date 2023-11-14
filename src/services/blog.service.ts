@@ -1,5 +1,6 @@
 import { FilterQuery, QueryOptions } from "mongoose";
 import BlogModel, { BlogDocument } from "../models/blog.model";
+import { UserDocument } from "../models/user.model";
 
 export async function createBlog(
   input: Partial<
@@ -7,7 +8,7 @@ export async function createBlog(
   >
 ) {
   try {
-    const blog = BlogModel.create(input);
+    const blog = await BlogModel.create(input);
     return blog;
   } catch (error) {
     console.log(error, "Error while creating a blog");
@@ -17,5 +18,8 @@ export async function getBlog(
   query: FilterQuery<BlogDocument>,
   options: QueryOptions = { lean: true }
 ) {
-  return BlogModel.findOne(query, {}, options);
+  return await BlogModel.findOne(query, {}, options);
+}
+export async function getAllBlogs(query: FilterQuery<UserDocument>) {
+  return await BlogModel.find(query).lean();
 }

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createBlog, getBlog } from "../services/blog.service";
+import { createBlog, getAllBlogs, getBlog } from "../services/blog.service";
 import { CreatBlogInput } from "../schemas/blog.schema";
 
 export async function createBlogHandler(
@@ -22,4 +22,10 @@ export async function getBlogHandler(req: Request, res: Response) {
     return res.status(404);
   }
   return res.send(blog);
+}
+export async function getAllBlogsHandler(req: Request, res: Response) {
+  const userId = res.locals.user._id;
+  const blogs = await getAllBlogs({ user: userId });
+  if (!blogs) return [];
+  return res.send(blogs);
 }
