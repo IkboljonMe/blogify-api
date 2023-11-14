@@ -9,7 +9,10 @@ import requireUser from "./middlewares/requireUser";
 import parseSchema from "./middlewares/parseSchema";
 import { createUserSchema } from "./schemas/user.schema";
 import createSessionSchema from "./schemas/session.schema";
-import { createBlogHandler } from "./controllers/blog.controller";
+import {
+  createBlogHandler,
+  getBlogHandler,
+} from "./controllers/blog.controller";
 import { createBlogSchema } from "./schemas/blog.schema";
 function routes(app: Express) {
   app.get("/healthcheck", (req: Request, res: Response) => {
@@ -28,5 +31,6 @@ function routes(app: Express) {
     [requireUser, parseSchema(createBlogSchema)],
     createBlogHandler
   );
+  app.get("/api/blogs/:blogId", requireUser, getBlogHandler);
 }
 export default routes;

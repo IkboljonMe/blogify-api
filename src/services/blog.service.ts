@@ -1,3 +1,4 @@
+import { FilterQuery, QueryOptions } from "mongoose";
 import BlogModel, { BlogDocument } from "../models/blog.model";
 
 export async function createBlog(
@@ -11,4 +12,10 @@ export async function createBlog(
   } catch (error) {
     console.log(error, "Error while creating a blog");
   }
+}
+export async function getBlog(
+  query: FilterQuery<BlogDocument>,
+  options: QueryOptions = { lean: true }
+) {
+  return BlogModel.findOne(query, {}, options);
 }

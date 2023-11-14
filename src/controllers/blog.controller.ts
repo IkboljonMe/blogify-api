@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createBlog } from "../services/blog.service";
+import { createBlog, getBlog } from "../services/blog.service";
 import { CreatBlogInput } from "../schemas/blog.schema";
 
 export async function createBlogHandler(
@@ -14,4 +14,12 @@ export async function createBlogHandler(
   } catch (error) {
     console.log(error, "Error while create a blog on handler fn");
   }
+}
+export async function getBlogHandler(req: Request, res: Response) {
+  const blogId = req.params.blogId;
+  const blog = await getBlog({ blogId });
+  if (!blog) {
+    return res.status(404);
+  }
+  return res.send(blog);
 }
