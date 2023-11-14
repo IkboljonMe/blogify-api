@@ -3,7 +3,9 @@ import UserModel, { UserDocument } from "../models/user.model";
 import { FilterQuery } from "mongoose";
 
 export async function createUser(
-  input: Omit<UserDocument, "createdAt" | "updatedAt">
+  input: Partial<
+    Omit<UserDocument, "createdAt" | "updatedAt" | "comparePassword">
+  >
 ) {
   try {
     const user = await UserModel.create(input);
