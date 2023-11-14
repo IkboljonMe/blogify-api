@@ -1,4 +1,4 @@
-import { FilterQuery } from "mongoose";
+import { FilterQuery, UpdateQuery } from "mongoose";
 import SessionModel, { SessionDocument } from "../models/session.model";
 import { jwtSign, verifyJwt } from "../utils/jwt";
 import { get } from "lodash";
@@ -14,6 +14,12 @@ export async function createSession(userId: string, userAgent: string) {
 }
 export async function getSessions(query: FilterQuery<SessionDocument>) {
   return await SessionModel.find(query).lean();
+}
+export default function updateSession(
+  query: FilterQuery<SessionDocument>,
+  update: UpdateQuery<SessionDocument>
+) {
+  return SessionModel.findOneAndUpdate(query, update);
 }
 export async function setNewAccesToken({
   refreshToken,
