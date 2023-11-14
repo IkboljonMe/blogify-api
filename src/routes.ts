@@ -9,6 +9,7 @@ import requireUser from "./middlewares/requireUser";
 import parseSchema from "./middlewares/parseSchema";
 import { createUserSchema } from "./schemas/user.schema";
 import createSessionSchema from "./schemas/session.schema";
+import { createBlogHandler } from "./controllers/blog.controller";
 function routes(app: Express) {
   app.get("/healthcheck", (req: Request, res: Response) => {
     res.sendStatus(200);
@@ -21,5 +22,6 @@ function routes(app: Express) {
   );
   app.get("/api/sessions", requireUser, getUserSessionsHandler);
   app.delete("/api/sessions", requireUser, deleteUserSessionHanler);
+  app.post("/api/blogs", requireUser, createBlogHandler);
 }
 export default routes;
