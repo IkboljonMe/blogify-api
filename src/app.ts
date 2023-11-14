@@ -1,1 +1,2 @@
-console.log("App is running");
+import express from "express";
+import config from "config";
