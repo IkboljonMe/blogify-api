@@ -1,6 +1,6 @@
 import { omit } from "lodash";
 import UserModel, { UserDocument } from "../models/user.model";
-import { FilterQuery } from "mongoose";
+import { FilterQuery, QueryOptions, UpdateQuery } from "mongoose";
 
 export async function createUser(
   input: Partial<
@@ -28,5 +28,11 @@ export async function validatePassword({
   return omit(user.toJSON(), "password");
 }
 export async function findUser(query: FilterQuery<UserDocument>) {
-  return UserModel.findOne(query).lean();
+  return await UserModel.findOne(query).lean();
+}
+export async function updateUser(
+  query: FilterQuery<UserDocument>,
+  update: UpdateQuery<UserDocument>
+) {
+  return await UserModel.findOneAndUpdate(query, update);
 }

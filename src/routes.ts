@@ -1,5 +1,8 @@
 import { Express, Request, Response } from "express";
-import { createUserHandler } from "./controllers/user.controller";
+import {
+  createUserHandler,
+  updateUserHandler,
+} from "./controllers/user.controller";
 import {
   createSessionHandler,
   deleteUserSessionHanler,
@@ -23,6 +26,8 @@ function routes(app: Express) {
     res.sendStatus(200);
   });
   app.post("/api/users", parseSchema(createUserSchema), createUserHandler);
+  app.put("/api/users", parseSchema(createUserSchema), updateUserHandler);
+
   app.post(
     "/api/sessions",
     parseSchema(createSessionSchema),
@@ -36,7 +41,7 @@ function routes(app: Express) {
     createBlogHandler
   );
   app.get("/api/blogs/:blogId", requireUser, getBlogHandler);
-  app.get("/api/blogs", requireUser, getAllBlogsHandler);
+  app.get("/api/blogs", getAllBlogsHandler);
   app.delete(
     "/api/blogs/:blogId",
     [requireUser, checkUserAndBlog],

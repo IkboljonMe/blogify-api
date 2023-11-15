@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createUser } from "../services/user.service";
+import { createUser, updateUser } from "../services/user.service";
 import { CreatUserInput } from "../schemas/user.schema";
 
 export async function createUserHandler(
@@ -12,4 +12,10 @@ export async function createUserHandler(
   } catch (error: any) {
     return res.sendStatus(409).send(error.message);
   }
+}
+export async function updateUserHandler(req: Request, res: Response) {
+  const userId = res.locals.user._id;
+  const updated = req.body;
+  const updatedUser = await updateUser({ _id: userId }, updated);
+  return res.send(updatedUser);
 }
