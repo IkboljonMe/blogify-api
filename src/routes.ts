@@ -14,8 +14,10 @@ import {
   deleteBlogHandler,
   getAllBlogsHandler,
   getBlogHandler,
+  updateBlogHandler,
 } from "./controllers/blog.controller";
 import { createBlogSchema } from "./schemas/blog.schema";
+import checkUserAndBlog from "./middlewares/checkUserAndBlog";
 function routes(app: Express) {
   app.get("/healthcheck", (req: Request, res: Response) => {
     res.sendStatus(200);
@@ -35,6 +37,15 @@ function routes(app: Express) {
   );
   app.get("/api/blogs/:blogId", requireUser, getBlogHandler);
   app.get("/api/blogs", requireUser, getAllBlogsHandler);
-  app.delete("/api/blogs/:blogId", requireUser, deleteBlogHandler);
+  app.delete(
+    "/api/blogs/:blogId",
+    [requireUser, checkUserAndBlog],
+    deleteBlogHandler
+  );
+  app.put(
+    "/api/blogs/:blogId",
+    [requireUser, checkUserAndBlog],
+    updateBlogHandler
+  );
 }
 export default routes;

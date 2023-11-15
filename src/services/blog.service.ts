@@ -1,4 +1,4 @@
-import { FilterQuery, QueryOptions } from "mongoose";
+import { FilterQuery, QueryOptions, UpdateQuery } from "mongoose";
 import BlogModel, { BlogDocument } from "../models/blog.model";
 import { UserDocument } from "../models/user.model";
 
@@ -25,4 +25,11 @@ export async function getAllBlogs(query: FilterQuery<UserDocument>) {
 }
 export async function deleteBlog(query: FilterQuery<BlogDocument>) {
   return await BlogModel.deleteOne(query);
+}
+export async function updateBlog(
+  query: FilterQuery<BlogDocument>,
+  update: UpdateQuery<BlogDocument>,
+  options: QueryOptions
+) {
+  return await BlogModel.findOneAndUpdate(query, update, options);
 }

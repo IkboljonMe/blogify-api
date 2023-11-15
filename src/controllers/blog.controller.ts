@@ -1,5 +1,10 @@
 import { Request, Response } from "express";
-import { createBlog, getAllBlogs, getBlog } from "../services/blog.service";
+import {
+  createBlog,
+  getAllBlogs,
+  getBlog,
+  updateBlog,
+} from "../services/blog.service";
 import { CreatBlogInput } from "../schemas/blog.schema";
 import { deleteBlog } from "../services/blog.service";
 
@@ -31,15 +36,14 @@ export async function getAllBlogsHandler(req: Request, res: Response) {
   return res.send(blogs);
 }
 export async function deleteBlogHandler(req: Request, res: Response) {
-  const blogId = req.params.blogId;
-  const userId = res.locals.user._id;
-  const blog = await getBlog({ blogId });
-  if (!blog) {
-    return res.sendStatus(404);
-  }
-  if (String(blog.user) !== userId) {
-    return res.sendStatus(403);
-  }
+  const { blogId } = req.params;
   const deletedBlog = await deleteBlog({ blogId });
   return res.send(deletedBlog);
+}
+export async function updateBlogHandler(req: Request, res: Response) {
+  const { blogId } = req.params;
+  const update = req.body;
+  const updatedBlog = await updateBlog({ blogId }, update, { new: true });
+  console.log(update, updatedBlog, req);
+  return res.send(updatedBlog);
 }
