@@ -23,3 +23,6 @@ export async function getBlog(
 export async function getAllBlogs(query: FilterQuery<UserDocument>) {
   return await BlogModel.find(query).lean();
 }
+export async function deleteBlog(query: FilterQuery<BlogDocument>) {
+  return await BlogModel.deleteOne(query);
+}

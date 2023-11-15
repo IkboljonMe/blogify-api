@@ -11,6 +11,7 @@ import { createUserSchema } from "./schemas/user.schema";
 import createSessionSchema from "./schemas/session.schema";
 import {
   createBlogHandler,
+  deleteBlogHandler,
   getAllBlogsHandler,
   getBlogHandler,
 } from "./controllers/blog.controller";
@@ -34,5 +35,6 @@ function routes(app: Express) {
   );
   app.get("/api/blogs/:blogId", requireUser, getBlogHandler);
   app.get("/api/blogs", requireUser, getAllBlogsHandler);
+  app.delete("/api/blogs/:blogId", requireUser, deleteBlogHandler);
 }
 export default routes;
