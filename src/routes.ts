@@ -18,6 +18,7 @@ import {
   getAllBlogsHandler,
   getBlogHandler,
   likeBlogHandler,
+  unlikeBlogHandler,
   updateBlogHandler,
 } from "./controllers/blog.controller";
 import { createBlogSchema } from "./schemas/blog.schema";
@@ -49,5 +50,6 @@ function routes(app: Express) {
     deleteBlogHandler
   );
   app.post("/api/blogs/:blogId/like", requireUser, likeBlogHandler);
+  app.post("/api/blogs/:blogId/unlike", requireUser, unlikeBlogHandler);
 }
 export default routes;

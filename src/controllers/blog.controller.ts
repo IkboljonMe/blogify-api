@@ -4,6 +4,7 @@ import {
   getAllBlogs,
   getBlog,
   likeBlog,
+  unlikeBlog,
   updateBlog,
 } from "../services/blog.service";
 import { CreatBlogInput } from "../schemas/blog.schema";
@@ -57,4 +58,13 @@ export async function likeBlogHandler(req: Request, res: Response) {
     res.status(404);
   }
   return res.send(likedBlog);
+}
+export async function unlikeBlogHandler(req: Request, res: Response) {
+  const userId = res.locals.user._id;
+  const blogId = req.params.blogId;
+  const unlikedBlog = await unlikeBlog(blogId, userId);
+  if (!unlikedBlog) {
+    res.status(404);
+  }
+  return res.send(unlikedBlog);
 }

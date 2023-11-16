@@ -50,3 +50,15 @@ export async function likeBlog(
     throw error;
   }
 }
+export async function unlikeBlog(blogId: string, userId: string) {
+  try {
+    const unlikedBlog = await BlogModel.findOneAndUpdate(
+      { blogId, likes: userId },
+      { $pull: { likes: userId } },
+      { new: true }
+    );
+    return unlikedBlog;
+  } catch (error: any) {
+    console.log("Error while unliking blog", error);
+  }
+}
