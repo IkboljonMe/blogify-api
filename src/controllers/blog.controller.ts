@@ -4,6 +4,7 @@ import {
   getAllBlogs,
   getBlog,
   likeBlog,
+  readBlog,
   unlikeBlog,
   updateBlog,
 } from "../services/blog.service";
@@ -50,12 +51,11 @@ export async function updateBlogHandler(req: Request, res: Response) {
   return res.send(updatedBlog);
 }
 export async function likeBlogHandler(req: Request, res: Response) {
-  //if user is like or not
   const userId = res.locals.user._id;
   const blogId = req.params.blogId;
   const likedBlog = await likeBlog(blogId, userId);
   if (!likedBlog) {
-    res.status(404);
+    return res.sendStatus(404);
   }
   return res.send(likedBlog);
 }
@@ -64,7 +64,19 @@ export async function unlikeBlogHandler(req: Request, res: Response) {
   const blogId = req.params.blogId;
   const unlikedBlog = await unlikeBlog(blogId, userId);
   if (!unlikedBlog) {
-    res.status(404);
+    return res.sendStatus(404);
   }
   return res.send(unlikedBlog);
+}
+export async function readBlogHandler(req: Request, res: Response) {
+  const userId = res.locals.user._id;
+  const blogId = req.params.blogId;
+  const hasReadBlog = await readBlog(userId, blogId);
+
+  console.log("hasReadBlog:", hasReadBlog);
+
+  if (!hasReadBlog) {
+    return res.sendStatus(404);
+  }
+  return res.send(hasReadBlog);
 }

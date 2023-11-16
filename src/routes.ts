@@ -18,6 +18,7 @@ import {
   getAllBlogsHandler,
   getBlogHandler,
   likeBlogHandler,
+  readBlogHandler,
   unlikeBlogHandler,
   updateBlogHandler,
 } from "./controllers/blog.controller";
@@ -51,5 +52,6 @@ function routes(app: Express) {
   );
   app.post("/api/blogs/:blogId/like", requireUser, likeBlogHandler);
   app.post("/api/blogs/:blogId/unlike", requireUser, unlikeBlogHandler);
+  app.post("/api/blogs/:blogId/read", requireUser, readBlogHandler);
 }
 export default routes;

@@ -33,32 +33,28 @@ export async function updateBlog(
 ) {
   return await BlogModel.findOneAndUpdate(query, update, options);
 }
-export async function likeBlog(
-  blogId: string,
-  userId: string
-): Promise<BlogDocument | null> {
-  try {
-    const updatedBlog = await BlogModel.findOneAndUpdate(
-      { blogId, likes: { $ne: userId } },
-      { $push: { likes: userId } },
-      { new: true }
-    );
+export async function likeBlog(blogId: string, userId: string) {
+  const likedBlog = await BlogModel.findOneAndUpdate(
+    { blogId, likes: { $ne: userId } },
+    { $push: { likes: userId } },
+    { new: true }
+  );
 
-    return updatedBlog; // Return null if the blog is not found
-  } catch (error) {
-    console.error("Error liking blog:", error);
-    throw error;
-  }
+  return likedBlog; // Return null if the blog is not found
 }
 export async function unlikeBlog(blogId: string, userId: string) {
-  try {
-    const unlikedBlog = await BlogModel.findOneAndUpdate(
-      { blogId, likes: userId },
-      { $pull: { likes: userId } },
-      { new: true }
-    );
-    return unlikedBlog;
-  } catch (error: any) {
-    console.log("Error while unliking blog", error);
-  }
+  const unlikedBlog = await BlogModel.findOneAndUpdate(
+    { blogId, likes: userId },
+    { $pull: { likes: userId } },
+    { new: true }
+  );
+  return unlikedBlog;
+}
+export async function readBlog(userId: string, blogId: string) {
+  const hasReadBlog = BlogModel.findOneAndUpdate(
+    { blogId, read: { $ne: userId } },
+    { $push: { read: userId } },
+    { new: true }
+  );
+  return hasReadBlog;
 }
