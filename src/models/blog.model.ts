@@ -6,8 +6,8 @@ export interface BlogDocument extends mongoose.Document {
   user: UserDocument["_id"];
   title: string;
   description: string;
-  likes: number;
-  read: number;
+  likes: string[];
+  read: mongoose.Schema.Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -23,8 +23,8 @@ const blogSchema = new mongoose.Schema(
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     title: { type: String, required: true },
     description: { type: String, required: true },
-    likes: { type: Number, default: 0 },
-    read: { type: Number, default: 1 },
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    read: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   {
     timestamps: true,

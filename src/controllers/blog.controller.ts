@@ -3,6 +3,7 @@ import {
   createBlog,
   getAllBlogs,
   getBlog,
+  likeBlog,
   updateBlog,
 } from "../services/blog.service";
 import { CreatBlogInput } from "../schemas/blog.schema";
@@ -46,4 +47,14 @@ export async function updateBlogHandler(req: Request, res: Response) {
   const updatedBlog = await updateBlog({ blogId }, update, { new: true });
   console.log(update, updatedBlog, req);
   return res.send(updatedBlog);
+}
+export async function likeBlogHandler(req: Request, res: Response) {
+  //if user is like or not
+  const userId = res.locals.user._id;
+  const blogId = req.params.blogId;
+  const likedBlog = await likeBlog(blogId, userId);
+  if (!likedBlog) {
+    res.status(404);
+  }
+  return res.send(likedBlog);
 }

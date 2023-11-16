@@ -33,3 +33,20 @@ export async function updateBlog(
 ) {
   return await BlogModel.findOneAndUpdate(query, update, options);
 }
+export async function likeBlog(
+  blogId: string,
+  userId: string
+): Promise<BlogDocument | null> {
+  try {
+    const updatedBlog = await BlogModel.findOneAndUpdate(
+      { blogId, likes: { $ne: userId } },
+      { $push: { likes: userId } },
+      { new: true }
+    );
+
+    return updatedBlog; // Return null if the blog is not found
+  } catch (error) {
+    console.error("Error liking blog:", error);
+    throw error;
+  }
+}
