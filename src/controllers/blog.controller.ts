@@ -47,7 +47,6 @@ export async function updateBlogHandler(req: Request, res: Response) {
   const { blogId } = req.params;
   const update = req.body;
   const updatedBlog = await updateBlog({ blogId }, update, { new: true });
-  console.log(update, updatedBlog, req);
   return res.send(updatedBlog);
 }
 export async function likeBlogHandler(req: Request, res: Response) {
@@ -72,9 +71,6 @@ export async function readBlogHandler(req: Request, res: Response) {
   const userId = res.locals.user._id;
   const blogId = req.params.blogId;
   const hasReadBlog = await readBlog(userId, blogId);
-
-  console.log("hasReadBlog:", hasReadBlog);
-
   if (!hasReadBlog) {
     return res.sendStatus(404);
   }
