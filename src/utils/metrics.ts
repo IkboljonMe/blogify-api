@@ -3,7 +3,16 @@ import client from "prom-client";
 import logger from "./logger";
 
 const app = express();
-
+export const restResponseTimeHistogram = new client.Histogram({
+  name: "rest_response_time_in_seconds",
+  help: "API response time in seconds",
+  labelNames: ["method", "route", "status_code"],
+});
+export const databaseResponseTimeHistogram = new client.Histogram({
+  name: "db_response_time_in_seconds",
+  help: "DATABASE response time in seconds",
+  labelNames: ["operation", "succes"],
+});
 export function startMetricsService() {
   const collectDefaulMetrics = client.collectDefaultMetrics;
   collectDefaulMetrics();
