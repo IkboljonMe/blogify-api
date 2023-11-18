@@ -22,6 +22,8 @@
     "@types/node": "^20.9.0",
     "@types/pino": "^7.0.5",
     "@types/response-time": "^2.3.8",
+    "@types/swagger-jsdoc": "^6.0.3",
+    "@types/swagger-ui-express": "^4.1.6",
     "ts-node-dev": "^2.0.0"
   },
   "dependencies": {
@@ -38,6 +40,8 @@
     "pino-pretty": "^10.2.3",
     "prom-client": "^15.0.0",
     "response-time": "^2.3.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
     "typescript": "^5.2.2",
     "zod": "^3.22.4"
   }

@@ -9,6 +9,7 @@ import {
   startMetricsService,
 } from "./utils/metrics";
 import responseTime from "response-time";
+import swaggerDocs from "./utils/swagger";
 const port = config.get<number>("port");
 const app = express();
 app.use(express.json());
@@ -32,4 +33,5 @@ app.listen(port, async () => {
   await database();
   routes(app);
   startMetricsService();
+  swaggerDocs(app, port);
 });
