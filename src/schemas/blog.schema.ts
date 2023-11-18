@@ -30,10 +30,6 @@ import { TypeOf, z } from "zod";
  * @openapi
  * components:
  *   schemas:
-/**
- * @openapi
- * components:
- *   schemas:
  *     BlogResponseInput:
  *       type: object
  *       properties:
@@ -86,6 +82,29 @@ import { TypeOf, z } from "zod";
  *            type: boolean
  *          deletedCount:
  *            type: number
+ */
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     CreateSessionResponse:
+ *       type: object
+ *       properties:
+ *         accessToken:
+ *           type: string
+ *         refreshToken:
+ *           type: string
+ *     GetUserAllSessionsResponse:
+ *       type: array
+ *       items:
+ *         $ref: '#/components/schemas/CreateSessionResponse'
+ *     DeleteSessionResponse:
+ *       type: object
+ *       properties:
+ *         accessToken:
+ *           type: null
+ *         refreshToken:
+ *           type: null
  */
 
 export const createBlogSchema = z.object({

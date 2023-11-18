@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { validatePassword } from "../services/user.service";
-import updateSession, {
+import {
+  updateSession,
   createSession,
   getSessions,
 } from "../services/session.service";
@@ -17,6 +18,9 @@ export async function createSessionHandler(req: Request, res: Response) {
   //create session
   const userAgent = get(req, "headers.user-agent", "")?.toString();
   const session = await createSession(user._id, userAgent);
+  if (!session) {
+    return res.sendStatus(404);
+  }
   //create acces and refresh tokens and send send them back
   const accessToken = jwtSign(
     {
@@ -37,11 +41,17 @@ export async function createSessionHandler(req: Request, res: Response) {
 export async function getUserSessionsHandler(req: Request, res: Response) {
   const userId = res.locals.user._id;
   const sessions = await getSessions({ user: userId, valid: true });
+  if (!sessions) {
+    return res.sendStatus(404);
+  }
   return res.send(sessions);
 }
 export async function deleteUserSessionHanler(req: Request, res: Response) {
   const sessionId = res.locals.user.session;
   await updateSession({ _id: sessionId }, { valid: false });
+  if (!updateSession) {
+    return res.sendStatus(404);
+  }
   return res.send({
     accessToken: null,
     refreshToken: null,
