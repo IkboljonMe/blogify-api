@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { createUser, updateUser } from "../services/user.service";
-import { CreatUserInput } from "../schemas/user.schema";
+import { CreatUserInput, UpdateUserInput } from "../schemas/user.schema";
 
 export async function createUserHandler(
   req: Request<{}, {}, CreatUserInput["body"]>,
@@ -12,7 +12,10 @@ export async function createUserHandler(
   }
   return res.send(user);
 }
-export async function updateUserHandler(req: Request, res: Response) {
+export async function updateUserHandler(
+  req: Request<{}, {}, UpdateUserInput["body"]>,
+  res: Response
+) {
   const userId = res.locals.user._id;
   const updated = req.body;
   const updatedUser = await updateUser({ _id: userId }, updated);
