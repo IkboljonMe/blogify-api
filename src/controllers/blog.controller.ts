@@ -8,7 +8,7 @@ import {
   unlikeBlog,
   updateBlog,
 } from "../services/blog.service";
-import { CreatBlogInput } from "../schemas/blog.schema";
+import { CreatBlogInput, BlogParamsInput } from "../schemas/blog.schema";
 import { deleteBlog } from "../services/blog.service";
 
 export async function createBlogHandler(
@@ -24,7 +24,10 @@ export async function createBlogHandler(
     console.log(error, "Error while create a blog on handler fn");
   }
 }
-export async function getBlogHandler(req: Request, res: Response) {
+export async function getBlogHandler(
+  req: Request<BlogParamsInput["params"]>,
+  res: Response
+) {
   const blogId = req.params.blogId;
   const blog = await getBlog({ blogId });
   if (!blog) {
@@ -38,7 +41,10 @@ export async function getAllBlogsHandler(req: Request, res: Response) {
   if (!blogs) return [];
   return res.send(blogs);
 }
-export async function deleteBlogHandler(req: Request, res: Response) {
+export async function deleteBlogHandler(
+  req: Request<BlogParamsInput["params"]>,
+  res: Response
+) {
   const { blogId } = req.params;
   const deletedBlog = await deleteBlog({ blogId });
   return res.send(deletedBlog);
@@ -49,7 +55,10 @@ export async function updateBlogHandler(req: Request, res: Response) {
   const updatedBlog = await updateBlog({ blogId }, update, { new: true });
   return res.send(updatedBlog);
 }
-export async function likeBlogHandler(req: Request, res: Response) {
+export async function likeBlogHandler(
+  req: Request<BlogParamsInput["params"]>,
+  res: Response
+) {
   const userId = res.locals.user._id;
   const blogId = req.params.blogId;
   const likedBlog = await likeBlog(blogId, userId);
@@ -58,7 +67,10 @@ export async function likeBlogHandler(req: Request, res: Response) {
   }
   return res.send(likedBlog);
 }
-export async function unlikeBlogHandler(req: Request, res: Response) {
+export async function unlikeBlogHandler(
+  req: Request<BlogParamsInput["params"]>,
+  res: Response
+) {
   const userId = res.locals.user._id;
   const blogId = req.params.blogId;
   const unlikedBlog = await unlikeBlog(blogId, userId);
@@ -67,7 +79,10 @@ export async function unlikeBlogHandler(req: Request, res: Response) {
   }
   return res.send(unlikedBlog);
 }
-export async function readBlogHandler(req: Request, res: Response) {
+export async function readBlogHandler(
+  req: Request<BlogParamsInput["params"]>,
+  res: Response
+) {
   const userId = res.locals.user._id;
   const blogId = req.params.blogId;
   const hasReadBlog = await readBlog(userId, blogId);

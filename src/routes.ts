@@ -22,7 +22,7 @@ import {
   unlikeBlogHandler,
   updateBlogHandler,
 } from "./controllers/blog.controller";
-import { createBlogSchema } from "./schemas/blog.schema";
+import { blogParamsSchema, createBlogSchema } from "./schemas/blog.schema";
 import checkUserAndBlog from "./middlewares/checkUserAndBlog";
 function routes(app: Express) {
   app.get("/healthcheck", (req: Request, res: Response) => {
@@ -43,15 +43,31 @@ function routes(app: Express) {
     [requireUser, parseSchema(createBlogSchema)],
     createBlogHandler
   );
-  app.get("/api/blogs/:blogId", requireUser, getBlogHandler);
+  app.get(
+    "/api/blogs/:blogId",
+    [requireUser, parseSchema(blogParamsSchema)],
+    getBlogHandler
+  );
   app.get("/api/blogs", getAllBlogsHandler);
   app.delete(
     "/api/blogs/:blogId",
-    [requireUser, checkUserAndBlog],
+    [requireUser, checkUserAndBlog, parseSchema(blogParamsSchema)],
     deleteBlogHandler
   );
-  app.post("/api/blogs/:blogId/like", requireUser, likeBlogHandler);
-  app.post("/api/blogs/:blogId/unlike", requireUser, unlikeBlogHandler);
-  app.post("/api/blogs/:blogId/read", requireUser, readBlogHandler);
+  app.post(
+    "/api/blogs/:blogId/like",
+    [requireUser, parseSchema(blogParamsSchema)],
+    likeBlogHandler
+  );
+  app.post(
+    "/api/blogs/:blogId/unlike",
+    [requireUser, parseSchema(blogParamsSchema)],
+    unlikeBlogHandler
+  );
+  app.post(
+    "/api/blogs/:blogId/read",
+    [requireUser, parseSchema(blogParamsSchema)],
+    readBlogHandler
+  );
 }
 export default routes;
