@@ -30,13 +30,51 @@ import { TypeOf, z } from "zod";
  * @openapi
  * components:
  *   schemas:
+/**
+ * @openapi
+ * components:
+ *   schemas:
  *     BlogResponseInput:
  *       type: object
  *       properties:
+ *         _id:
+ *           type: string
+ *           example: "655902fb66c6642ea7401db5"
+ *         user:
+ *           type: string
+ *           example: "6553d13a12da0a729a88988d"
  *         title:
  *           type: string
+ *           example: "Today created 19"
  *         description:
  *           type: string
+ *           example: >
+ *             Designed for first-time DSLR owners who want impressive results straight out of the box,
+ *             capture those magic moments no matter your level with the EOS 1500D.
+ *             With easy to use automatic shooting modes, large 24.1 MP sensor, Canon Camera Connect app integration,
+ *             and built-in feature guide, EOS 1500D is always ready to go.
+ *         likes:
+ *           type: array
+ *           items: {}
+ *           example: []
+ *         read:
+ *           type: array
+ *           items: {}
+ *           example: []
+ *         blogId:
+ *           type: string
+ *           example: "28baf976a3"
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2023-11-18T18:31:23.278Z"
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2023-11-18T18:31:56.622Z"
+ *         __v:
+ *           type: integer
+ *           example: 0
  *     GetAllBlogsResponse:
  *       type: array
  *       items:

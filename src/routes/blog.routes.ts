@@ -172,16 +172,103 @@ function blogRoutes(app: Express) {
     [requireUser, checkUserAndBlog, parseSchema(updateBlogSchema)],
     updateBlogHandler
   );
+  /**
+   * @openapi
+   * /api/blogs/{blogId}/like:
+   *   post:
+   *     tags:
+   *       - Like a blog
+   *     summary: Like a specific blog
+   *     parameters:
+   *       - name: blogId
+   *         in: path
+   *         required: true
+   *         description: The ID of the blog
+   *         schema:
+   *           type: string
+   *           default: "defaultBlogId"
+   *     responses:
+   *       '200':
+   *         description: Liking a blog retrieval successful
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/BlogResponseInput'
+   *       '404':
+   *         description: Blog not found
+   *       '400':
+   *         description: Bad request, invalid input
+   *       '403':
+   *         description: Unauthorized, user not logged in
+   */
   app.post(
     "/api/blogs/:blogId/like",
     [requireUser, parseSchema(blogParamsSchema)],
     likeBlogHandler
   );
+  /**
+   * @openapi
+   * /api/blogs/{blogId}/unlike:
+   *   post:
+   *     tags:
+   *       - Unlike a blog
+   *     summary: Unlike a specific blog
+   *     parameters:
+   *       - name: blogId
+   *         in: path
+   *         required: true
+   *         description: The ID of the blog
+   *         schema:
+   *           type: string
+   *           default: "defaultBlogId"
+   *     responses:
+   *       '200':
+   *         description: Unliking a blog retrieval successful
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/BlogResponseInput'
+   *       '404':
+   *         description: Blog not found
+   *       '400':
+   *         description: Bad request, invalid input
+   *       '403':
+   *         description: Unauthorized, user not logged in
+   */
   app.post(
     "/api/blogs/:blogId/unlike",
     [requireUser, parseSchema(blogParamsSchema)],
     unlikeBlogHandler
   );
+  /**
+   * @openapi
+   * /api/blogs/{blogId}/read:
+   *   post:
+   *     tags:
+   *       - Read a blog
+   *     summary: Read a specific blog
+   *     parameters:
+   *       - name: blogId
+   *         in: path
+   *         required: true
+   *         description: The ID of the blog
+   *         schema:
+   *           type: string
+   *           default: "defaultBlogId"
+   *     responses:
+   *       '200':
+   *         description: Has read a blog retrieval successful
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/BlogResponseInput'
+   *       '404':
+   *         description: Blog not found
+   *       '400':
+   *         description: Bad request, invalid input
+   *       '403':
+   *         description: Unauthorized, user not logged in
+   */
   app.post(
     "/api/blogs/:blogId/read",
     [requireUser, parseSchema(blogParamsSchema)],
