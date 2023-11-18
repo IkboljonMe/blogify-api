@@ -51,6 +51,9 @@ export async function deleteBlogHandler(
 ) {
   const { blogId } = req.params;
   const deletedBlog = await deleteBlog({ blogId });
+  if (!deletedBlog) {
+    res.sendStatus(404);
+  }
   return res.send(deletedBlog);
 }
 export async function updateBlogHandler(
