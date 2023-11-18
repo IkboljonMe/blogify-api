@@ -1,5 +1,33 @@
 import { TypeOf, z } from "zod";
-
+/**
+ * @openapi
+ * components:
+ *  schemas:
+ *    CreateBlogInput:
+ *      type: object
+ *      required:
+ *        - title
+ *        - description
+ *      properties:
+ *        title:
+ *          type: string
+ *          default: Title of blog
+ *        description:
+ *          type: string
+ *          default: Designed for first-time DSLR owners who want impressive results straight out of the box, capture those magic moments no matter your level with the EOS 1500D. With easy to use automatic shooting modes, large 24.1 MP sensor, Canon Camera Connect app integration and built-in feature guide, EOS 1500D is always ready to go
+ */
+/**
+ * @openapi
+ * components:
+ *  schemas:
+ *    BlogResponse:
+ *      type: object
+ *      properties:
+ *        title:
+ *          type: string
+ *        description:
+ *          type: string
+ */
 export const createBlogSchema = z.object({
   body: z.object({
     title: z.string({

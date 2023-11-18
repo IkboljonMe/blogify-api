@@ -12,10 +12,10 @@ const options: swaggerJsdoc.Options = {
       version,
     },
     components: {
-      securitySchemas: {
-        bearedAuth: {
+      securitySchemes: {
+        bearerAuth: {
           type: "http",
-          schema: "bearer",
+          scheme: "bearer",
           bearerFormat: "JWT",
         },
       },
@@ -32,10 +32,13 @@ const options: swaggerJsdoc.Options = {
 const swaggerSpec = swaggerJsdoc(options);
 function swaggerDocs(app: Express, port: number) {
   app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-  app.get("docs.json", (req: Request, res: Response) => {
+
+  // Correct the endpoint to use swaggerSpec instead of swaggerDocs
+  app.get("/docs.json", (req: Request, res: Response) => {
     res.setHeader("Content-Type", "application/json");
-    res.send(swaggerDocs);
+    res.send(swaggerSpec);
   });
+
   logger.info(`Docs available at http://localhost:${port}/docs`);
 }
 
