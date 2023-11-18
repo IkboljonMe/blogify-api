@@ -6,12 +6,11 @@ export async function createUserHandler(
   req: Request<{}, {}, CreatUserInput["body"]>,
   res: Response
 ) {
-  try {
-    const user = await createUser(req.body);
-    return res.send(user);
-  } catch (error: any) {
-    return res.sendStatus(409).send(error.message);
+  const user = await createUser(req.body);
+  if (!user) {
+    res.sendStatus(409);
   }
+  return res.send(user);
 }
 export async function updateUserHandler(req: Request, res: Response) {
   const userId = res.locals.user._id;
