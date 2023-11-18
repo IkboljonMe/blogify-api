@@ -4,23 +4,45 @@ import { jwtSign, verifyJwt } from "../utils/jwt";
 import { get } from "lodash";
 import { findUser } from "./user.service";
 import config from "config";
+import { startDatabaseTimer } from "../utils/metrics";
+
 export async function createSession(userId: string, userAgent: string) {
+  const { timerSuccess, timerFailure } = startDatabaseTimer("createSession");
   try {
     const session = await SessionModel.create({ user: userId, userAgent });
+    timerSuccess();
     return session.toJSON();
   } catch (error: any) {
-    throw new Error(error);
+    console.log("Error", error);
+    timerFailure();
   }
 }
 export async function getSessions(query: FilterQuery<SessionDocument>) {
-  return await SessionModel.find(query).lean();
+  const { timerSuccess, timerFailure } = startDatabaseTimer("getSessions");
+  try {
+    const sessions = await SessionModel.find(query).lean();
+    timerSuccess();
+    return sessions;
+  } catch (error: any) {
+    console.log("Error", error);
+    timerFailure();
+  }
 }
-export default function updateSession(
+export async function updateSession(
   query: FilterQuery<SessionDocument>,
   update: UpdateQuery<SessionDocument>
 ) {
-  return SessionModel.findOneAndUpdate(query, update);
+  const { timerSuccess, timerFailure } = startDatabaseTimer("updateSession");
+  try {
+    const updatedSession = await SessionModel.findOneAndUpdate(query, update);
+    timerSuccess();
+    return updatedSession;
+  } catch (error: any) {
+    console.log("Error", error);
+    timerFailure();
+  }
 }
+//additional
 export async function setNewAccesToken({
   refreshToken,
 }: {

@@ -1,60 +1,120 @@
 import { FilterQuery, QueryOptions, UpdateQuery } from "mongoose";
 import BlogModel, { BlogDocument } from "../models/blog.model";
 import { UserDocument } from "../models/user.model";
+import { startDatabaseTimer } from "../utils/metrics";
 
 export async function createBlog(
   input: Partial<
     Omit<BlogDocument, "createdAt" | "updatedAt" | "read" | "likes">
   >
 ) {
+  const { timerSuccess, timerFailure } = startDatabaseTimer("createBlog");
   try {
     const blog = await BlogModel.create(input);
+    timerSuccess();
     return blog;
-  } catch (error) {
-    console.log(error, "Error while creating a blog");
+  } catch (error: any) {
+    console.log("Error", error);
+    timerFailure();
   }
 }
 export async function getBlog(
   query: FilterQuery<BlogDocument>,
   options: QueryOptions = { lean: true }
 ) {
-  return await BlogModel.findOne(query, {}, options);
+  const { timerSuccess, timerFailure } = startDatabaseTimer("getBlog");
+  try {
+    const blog = BlogModel.findOne(query, {}, options);
+    timerSuccess();
+    return await blog;
+  } catch (error: any) {
+    console.log("Error", error);
+    timerFailure();
+  }
 }
 export async function getAllBlogs(query: FilterQuery<UserDocument>) {
-  return await BlogModel.find(query).lean();
+  const { timerSuccess, timerFailure } = startDatabaseTimer("getAllBlogs");
+  try {
+    const blogs = await BlogModel.find(query).lean();
+    timerSuccess();
+    return blogs;
+  } catch (error: any) {
+    console.log("Error", error);
+    timerFailure();
+  }
 }
 export async function deleteBlog(query: FilterQuery<BlogDocument>) {
-  return await BlogModel.deleteOne(query);
+  const { timerSuccess, timerFailure } = startDatabaseTimer("deleteBlog");
+  try {
+    const deletedBlog = await BlogModel.deleteOne(query);
+    timerSuccess();
+    return deletedBlog;
+  } catch (error: any) {
+    console.log("Error", error);
+    timerFailure();
+  }
 }
 export async function updateBlog(
   query: FilterQuery<BlogDocument>,
   update: UpdateQuery<BlogDocument>,
   options: QueryOptions
 ) {
-  return await BlogModel.findOneAndUpdate(query, update, options);
+  const { timerSuccess, timerFailure } = startDatabaseTimer("updateBlog");
+  try {
+    const updatedBlog = await BlogModel.findOneAndUpdate(
+      query,
+      update,
+      options
+    );
+    timerSuccess();
+    return updatedBlog;
+  } catch (error: any) {
+    console.log("Error", error);
+    timerFailure();
+  }
 }
 export async function likeBlog(blogId: string, userId: string) {
-  const likedBlog = await BlogModel.findOneAndUpdate(
-    { blogId, likes: { $ne: userId } },
-    { $push: { likes: userId } },
-    { new: true }
-  );
-
-  return likedBlog; // Return null if the blog is not found
+  const { timerSuccess, timerFailure } = startDatabaseTimer("likeBlog");
+  try {
+    const likedBlog = await BlogModel.findOneAndUpdate(
+      { blogId, likes: { $ne: userId } },
+      { $push: { likes: userId } },
+      { new: true }
+    );
+    timerSuccess();
+    return likedBlog;
+  } catch (error: any) {
+    console.log("Error", error);
+    timerFailure();
+  }
 }
 export async function unlikeBlog(blogId: string, userId: string) {
-  const unlikedBlog = await BlogModel.findOneAndUpdate(
-    { blogId, likes: userId },
-    { $pull: { likes: userId } },
-    { new: true }
-  );
-  return unlikedBlog;
+  const { timerSuccess, timerFailure } = startDatabaseTimer("unlikeBlog");
+  try {
+    const unlikedBlog = await BlogModel.findOneAndUpdate(
+      { blogId, likes: userId },
+      { $pull: { likes: userId } },
+      { new: true }
+    );
+    timerSuccess();
+    return unlikedBlog;
+  } catch (error: any) {
+    console.log("Error", error);
+    timerFailure();
+  }
 }
 export async function readBlog(userId: string, blogId: string) {
-  const hasReadBlog = BlogModel.findOneAndUpdate(
-    { blogId, read: { $ne: userId } },
-    { $push: { read: userId } },
-    { new: true }
-  );
-  return hasReadBlog;
+  const { timerSuccess, timerFailure } = startDatabaseTimer("readBlog");
+  try {
+    const hasReadBlog = BlogModel.findOneAndUpdate(
+      { blogId, read: { $ne: userId } },
+      { $push: { read: userId } },
+      { new: true }
+    );
+    timerSuccess();
+    return hasReadBlog;
+  } catch (error: any) {
+    console.log("Error", error);
+    timerFailure();
+  }
 }

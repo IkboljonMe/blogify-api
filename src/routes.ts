@@ -22,7 +22,11 @@ import {
   unlikeBlogHandler,
   updateBlogHandler,
 } from "./controllers/blog.controller";
-import { blogParamsSchema, createBlogSchema } from "./schemas/blog.schema";
+import {
+  blogParamsSchema,
+  createBlogSchema,
+  updateBlogSchema,
+} from "./schemas/blog.schema";
 import checkUserAndBlog from "./middlewares/checkUserAndBlog";
 function routes(app: Express) {
   app.get("/healthcheck", (req: Request, res: Response) => {
@@ -53,6 +57,11 @@ function routes(app: Express) {
     "/api/blogs/:blogId",
     [requireUser, checkUserAndBlog, parseSchema(blogParamsSchema)],
     deleteBlogHandler
+  );
+  app.put(
+    "/api/blogs/:blogId",
+    [requireUser, checkUserAndBlog, parseSchema(updateBlogSchema)],
+    updateBlogHandler
   );
   app.post(
     "/api/blogs/:blogId/like",

@@ -1,6 +1,10 @@
 import express from "express";
 import client from "prom-client";
 import logger from "./logger";
+type DatabaseTimer = {
+  timerSuccess: () => void;
+  timerFailure: () => void;
+};
 
 const app = express();
 export const restResponseTimeHistogram = new client.Histogram({
@@ -11,8 +15,17 @@ export const restResponseTimeHistogram = new client.Histogram({
 export const databaseResponseTimeHistogram = new client.Histogram({
   name: "db_response_time_in_seconds",
   help: "DATABASE response time in seconds",
-  labelNames: ["operation", "succes"],
+  labelNames: ["operation", "success"],
 });
+export const startDatabaseTimer = (operation: string): DatabaseTimer => {
+  const metricsLabel = { operation };
+  const timer = databaseResponseTimeHistogram.startTimer();
+
+  return {
+    timerSuccess: () => timer({ ...metricsLabel, success: "true" }),
+    timerFailure: () => timer({ ...metricsLabel, success: "false" }),
+  };
+};
 export function startMetricsService() {
   const collectDefaulMetrics = client.collectDefaultMetrics;
   collectDefaulMetrics();

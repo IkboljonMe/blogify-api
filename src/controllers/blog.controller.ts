@@ -8,7 +8,11 @@ import {
   unlikeBlog,
   updateBlog,
 } from "../services/blog.service";
-import { CreatBlogInput, BlogParamsInput } from "../schemas/blog.schema";
+import {
+  CreatBlogInput,
+  BlogParamsInput,
+  UpdateBlogInput,
+} from "../schemas/blog.schema";
 import { deleteBlog } from "../services/blog.service";
 
 export async function createBlogHandler(
@@ -49,9 +53,13 @@ export async function deleteBlogHandler(
   const deletedBlog = await deleteBlog({ blogId });
   return res.send(deletedBlog);
 }
-export async function updateBlogHandler(req: Request, res: Response) {
+export async function updateBlogHandler(
+  req: Request<UpdateBlogInput["params"]>,
+  res: Response
+) {
   const { blogId } = req.params;
-  const update = req.body;
+  const update: UpdateBlogInput["body"] = req.body;
+  console.log(blogId, update);
   const updatedBlog = await updateBlog({ blogId }, update, { new: true });
   return res.send(updatedBlog);
 }
