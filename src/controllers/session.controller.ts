@@ -6,7 +6,6 @@ import {
   getSessions,
 } from "../services/session.service";
 import { jwtSign } from "../utils/jwt";
-import config from "config";
 import { get } from "lodash";
 
 export async function createSessionHandler(req: Request, res: Response) {
@@ -27,14 +26,14 @@ export async function createSessionHandler(req: Request, res: Response) {
       ...user,
       session: session._id,
     },
-    { expiresIn: config.get<string>("accessTokenTime") }
+    { expiresIn: process.env.NODE_ENV_ACCESS_TOKEN ?? "" }
   );
   const refreshToken = jwtSign(
     {
       ...user,
       session: session._id,
     },
-    { expiresIn: config.get<string>("refreshTokenTime") }
+    { expiresIn: process.env.NODE_ENV_ACCESS_TOKEN ?? "" }
   );
   res.send({ accessToken, refreshToken });
 }

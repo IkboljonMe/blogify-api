@@ -3,7 +3,6 @@ import SessionModel, { SessionDocument } from "../models/session.model";
 import { jwtSign, verifyJwt } from "../utils/jwt";
 import { get } from "lodash";
 import { findUser } from "./user.service";
-import config from "config";
 import { startDatabaseTimer } from "../utils/metrics";
 
 export async function createSession(userId: string, userAgent: string) {
@@ -59,7 +58,7 @@ export async function setNewAccesToken({
       ...user,
       session: session._id,
     },
-    { expiresIn: config.get<string>("accessTokenTime") }
+    { expiresIn: process.env.NODE_ENV_ACCESS_TOKEN ?? "" }
   );
   return newAccessToken;
 }

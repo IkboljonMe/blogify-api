@@ -1,7 +1,5 @@
 import jwt from "jsonwebtoken";
-import config from "config";
-
-const secret = config.get<string>("jwtSecret");
+const secret = process.env.NODE_ENV_JWT_SECRET ?? "";
 export function jwtSign(object: Object, options?: jwt.SignOptions | undefined) {
   return jwt.sign(object, secret, {
     ...(options && options),

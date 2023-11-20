@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
-import config from "config";
 import bcrypt from "bcrypt";
-import { NextFunction } from "express";
 export interface UserDocument extends mongoose.Document {
   email: string;
   name: string;
@@ -24,7 +22,7 @@ userSchema.pre("save", async function (next: any) {
     return next();
   }
   try {
-    const salt = config.get<number>("salt");
+    const salt = Number(process.env.NODE_ENV_SALT) ?? "";
     const hashedPassword = await bcrypt.hash(user.password, salt);
     user.password = hashedPassword;
     return next();

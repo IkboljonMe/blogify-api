@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-import config from "config";
 import logger from "./utils/logger";
 import database from "./utils/database";
 import routes from "./routes";
@@ -10,8 +9,10 @@ import {
 } from "./utils/metrics";
 import responseTime from "response-time";
 import swaggerDocs from "./utils/swagger";
-const port = config.get<number>("port");
+const port = process.env.NODE_ENV_PORT ?? "1337";
 const app = express();
+import dotenv from "dotenv";
+dotenv.config();
 app.use(express.json());
 app.use(deserializeUser);
 app.use(
