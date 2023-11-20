@@ -1,0 +1,5 @@
+blogify-api.snipd.io {
+    reverse_proxy blogify-api:1337 {
+        header_down Strict-Transport-Security max-age=31536000;
+    }
+}
