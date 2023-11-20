@@ -1,0 +1,14 @@
+version: "3"
+services:
+  blogify-api:
+    container_name: blogify-api
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "1337:1337"
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
